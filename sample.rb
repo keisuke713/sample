@@ -1,10 +1,35 @@
+module Scheduable
+  attr_writer :schedule
+  def schedule
+    @schedule ||= ::Schedule.new
+  end
+
+  def schedulable?(start_date, end_date)
+    schedule.scheduled?(self, start_date, end_date)
+  end
+
+  def lead_days
+    0
+  end
+end
+
+class Schedule
+  def scheduled?(schedulable, start_date, end_date)
+  end
+end
+
 class Bicycle
-  attr_reader :size, :chain, :tire_size
+  attr_reader :schedule, :size, :chain, :tire_size
   def initialize(args={})
+    @schedule  = args[:schedule]
     @size      = args[:size]
     @chain     = args[:chain] || default_chain
     @tire_size = args[:tire_size] || default_tire_size
     post_initialize(args)
+  end
+
+  def lead_days
+    1
   end
 
   def post_initialize(args)
